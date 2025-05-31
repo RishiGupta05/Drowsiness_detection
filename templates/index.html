@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drowsiness Detection Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #1e1e2f;
+            color: #fff;
+            margin: 0;
+        }
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #29293d;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 80%;
+            max-width: 800px;
+        }
+        h1 {
+            color: #f4f4f4;
+            margin-bottom: 15px;
+        }
+        .video-container {
+            border: 3px solid #ff4d4d;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        img {
+            width: 100%;
+            max-width: 640px;
+            display: block;
+        }
+        .alert-box {
+            background: #ff4d4d;
+            color: white;
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            display: none;
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Drowsiness Detection Dashboard</h1>
+        <div class="video-container">
+            <img id="video" src="/video_feed" alt="Webcam Feed">
+        </div>
+        <p id="alert-box" class="alert-box">Drowsiness Detected!</p>
+    </div>
+    
+    <script>
+        var socket = io();
+        socket.on('alert', function(data) {
+            let alertBox = document.getElementById("alert-box");
+            if (data.message.toLowerCase().includes("drowsiness")) {
+                alertBox.innerText = data.message;
+                alertBox.style.display = "block";
+            } else {
+                alertBox.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
